@@ -26,11 +26,168 @@ This project aims to create a blogging platform using modern technologies for bo
 
 ## Setup Instructions
 
+### Quick Start with Docker (Recommended)
+
+The easiest way to run PenCraft is using Docker and Docker Compose. This method requires no manual setup of databases, Node.js, or other dependencies.
+
+#### Prerequisites
+- [Docker](https://docs.docker.com/get-docker/) installed on your system
+- [Docker Compose](https://docs.docker.com/compose/install/) (usually included with Docker Desktop)
+
+#### Running the Application
+
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd PenCraft-Full-Stack-Blogging-Application
+   ```
+
+2. **Copy environment variables:**
+   ```bash
+   cp .env.example .env
+   cp backend/.env.example backend/.env
+   cp frontend/.env.example frontend/.env
+   ```
+
+3. **Update environment variables (optional):**
+   Edit the `.env` files to customize database credentials, JWT secrets, and other configuration options.
+
+4. **Start the application:**
+   ```bash
+   # For production build
+   docker-compose up -d
+
+   # Or for development with hot reload
+   docker-compose -f docker-compose.dev.yml up -d
+   ```
+
+5. **Access the application:**
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8080
+   - Database: postgresql://pencraft_user:pencraft_password@localhost:5432/pencraft_db
+
+#### Docker Commands Reference
+
+```bash
+# Start all services in the background
+docker-compose up -d
+
+# View logs from all services
+docker-compose logs -f
+
+# Stop all services
+docker-compose down
+
+# Stop and remove all data (including database)
+docker-compose down -v
+
+# Rebuild and start services (after code changes)
+docker-compose up --build -d
+
+# Run database migrations manually (if needed)
+docker-compose exec backend npx prisma migrate deploy
+
+# Access the database directly
+docker-compose exec db psql -U pencraft_user -d pencraft_db
+
+# View running containers
+docker-compose ps
+
+# Restart a specific service
+docker-compose restart backend
+```
+
+#### Development with Docker
+
+For development with hot reload:
+
+```bash
+# Start development environment
+docker-compose -f docker-compose.dev.yml up -d
+
+# Follow logs
+docker-compose -f docker-compose.dev.yml logs -f
+
+# Stop development environment
+docker-compose -f docker-compose.dev.yml down
+```
+
+#### Docker Architecture
+
+The Docker setup includes three main services:
+
+1. **PostgreSQL Database (`db`)**: 
+   - Official PostgreSQL 15 Alpine image
+   - Persistent data storage with Docker volumes
+   - Health checks to ensure database readiness
+
+2. **Backend API (`backend`)**:
+   - Node.js 18 Alpine with Hono framework
+   - Automatic Prisma migrations on startup
+   - Environment variables for database connection and JWT secrets
+
+3. **Frontend (`frontend`)**:
+   - React with Vite build system
+   - Nginx for serving static files in production
+   - Reverse proxy configuration for API calls
+
+#### Environment Variables
+
+The application uses environment variables for configuration:
+
+- **Database**: Connection string, user credentials
+- **Backend**: JWT secret, port configuration, Cloudinary settings
+- **Frontend**: Backend API URL, app configuration
+
+Copy the example files and customize as needed:
+```bash
+cp .env.example .env
+cp backend/.env.example backend/.env  
+cp frontend/.env.example frontend/.env
+```
+
+#### Useful Docker Commands with Makefile
+
+A Makefile is provided for easier management:
+
+```bash
+make setup       # Copy environment files
+make up          # Start production environment  
+make dev         # Start development environment
+make logs        # View logs
+make down        # Stop services
+make clean       # Remove all containers and volumes
+make db-migrate  # Run database migrations
+make db-shell    # Access database shell
+```
+
+#### Troubleshooting Docker Setup
+
+1. **Port conflicts:** If ports 3000, 8080, or 5432 are already in use, modify the port mappings in `docker-compose.yml`
+
+2. **Permission issues:** On Linux/macOS, you might need to run Docker commands with `sudo`
+
+3. **Database connection issues:** Ensure the database service is healthy before the backend starts:
+   ```bash
+   docker-compose logs db
+   ```
+
+4. **Build issues:** Clear Docker cache and rebuild:
+   ```bash
+   docker-compose down
+   docker system prune -f
+   docker-compose up --build
+   ```
+
+### Manual Setup (Alternative)
+
+If you prefer to set up the application manually without Docker:
+
 ### Frontend
 
 1. Navigate to the `frontend` directory.
 2. Run `npm install` to install dependencies.
-3. Run `npm start` to start the development server.
+3. Run `npm run dev` to start the development server.
 4. Access the development server at `http://localhost:3000`.
 
 ### Backend

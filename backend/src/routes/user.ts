@@ -9,6 +9,16 @@ export const userRouter = new Hono<{
     JWT_SECRET: string;
   };
 }>();
+
+// Health check endpoint
+userRouter.get("/health", async (c) => {
+  return c.json({ 
+    status: "ok", 
+    timestamp: new Date().toISOString(),
+    service: "PenCraft Backend API"
+  });
+});
+
 //                                          Signup
 userRouter.post("/signup", async (c) => {
   const prisma = new PrismaClient({

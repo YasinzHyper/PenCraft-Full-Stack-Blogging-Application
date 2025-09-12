@@ -1,10 +1,14 @@
 {
   "scripts": {
     "dev": "wrangler dev src/index.ts",
-    "deploy": "wrangler deploy --minify src/index.ts"
+    "deploy": "wrangler deploy --minify src/index.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "start:docker": "tsx src/server.ts"
   },
   "dependencies": {
     "@akshitlakhera/common-zod-app": "^1.0.0",
+    "@hono/node-server": "^1.8.2",
     "@prisma/client": "^5.10.2",
     "@prisma/extension-accelerate": "^0.6.3",
     "axios": "^1.6.8",
@@ -22,6 +26,8 @@
     "@types/uuid": "^9.0.8",
     "backblaze-b2": "^1.7.0",
     "prettier": "3.2.5",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0",
     "wrangler": "^3.25.0"
   }
 }
