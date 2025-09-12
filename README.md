@@ -54,11 +54,11 @@ The easiest way to run PenCraft is using Docker and Docker Compose. This method 
 
 4. **Start the application:**
    ```bash
-   # For production build
-   docker-compose up -d
-
-   # Or for development with hot reload
+   # For development with hot reload
    docker-compose -f docker-compose.dev.yml up -d
+
+   # Or for production build
+   docker-compose up -d
    ```
 
 5. **Access the application:**
