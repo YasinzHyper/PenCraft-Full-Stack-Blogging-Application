@@ -14,7 +14,7 @@ RUN \
   if [ -f pnpm-lock.yaml ]; then \
     corepack enable pnpm && pnpm i --frozen-lockfile; \
   else \
-    npm ci; \
+    npm i; \
   fi
 
 # Rebuild the source code only when needed
